@@ -1,0 +1,66 @@
+{
+  "custom_invite_attempts": 3,
+  "custom_invite_channel": "general",
+  "custom_invite_debug": false,
+  "custom_invite_format": "{member_name} has joined from {invite_name}",
+  "custom_invite_messages": {
+    "ABCdefg12h": "custom invite 1"
+  },
+
+  "discord_bot_owner_id": 123456789012345678,
+  "discord_guild_id": 123456789012345678,
+  "discord_channel_ids": {
+    "admin": 123456789012345678,
+    "bot_commands": 123456789012345678,
+    "leaving": 123456789012345678,
+    "suggestions": 123456789012345678,
+    "suggestions-discussion": 123456789012345678,
+    "welcome": 123456789012345678
+  },
+  "discord_role_ids": {
+    "admin": 123456789012345678,
+    "mod": 123456789012345678,
+    "member": 123456789012345678,
+    "guest": 123456789012345678
+  },
+
+  "leave_channel": "leaving",
+  "leave_message": "> {member_name} has left the server.",
+
+  "media_rate_any_url": false,
+  "media_rate_channels": ["memes", "pics"],
+  "media_rate_downvote": "👎",
+  "media_rate_upvote": "👍",
+
+  "message_log": false,
+
+  "suggestions_cancel": "❌",
+  "suggestions_confirmation_format": "Your suggestion has been added.\nYou can undo this by pressing {cancel_emoji} in the next 30 seconds.",
+  "suggestions_channel": "suggestions",
+  "suggestions_deleted_format": "Your suggestion has been deleted.",
+  "suggestions_downvote": "👎",
+  "suggestions_format": "** **\n** **\n__**SUGGESTION FROM {author}:**__\n{suggestion}\n** **\n** **",
+  "suggestions_human_channel": "suggestions-discussion",
+  "suggestions_upvote": "👍",
+
+  "voice_hoist_when_active": false,
+  "voice_channels_category_id": 123456789012345678,
+  "voice_channels_active_pos": 3,
+  "voice_channels_inactive_pos": 4,
+  "voice_chat_indictor_category_id": 123456789012345678,
+  "voice_chat_indicator_id": 123456789012345678,
+  "voice_chat_indicator_format": "❗🗣 VC Users: {vc_user_count}",
+
+  "watchdog": {
+    "bot_vars": {
+      "directory": "$HOME/discord_bots/bot_name/src",
+      "launch_command": "poetry run python main.py --config config.json",
+      "process_name": "dicord-bot-main"
+    },
+    "watchdog_vars": {
+      "directory": "$HOME/discord_bots/bot_name/src",
+      "launch_command": "poetry run python watchdog.py --config config.json",
+      "process_name": "watchdog_discord-bot"
+    }
+  }
+}
