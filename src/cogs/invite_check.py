@@ -41,6 +41,8 @@ class InviteCheck(commands.Cog):
     async def map_invites(self, invites: List[nextcord.Invite]):
         invite_map: Dict[str, Dict] = {}
         for invite in invites:
+            if invite.code is None:
+                continue
             invite_map[invite.code] = {
                 "uses": invite.uses,
                 "inviter": invite.inviter,

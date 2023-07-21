@@ -6,41 +6,31 @@ on:
       - main
   pull_request:
   workflow_dispatch:
-
 jobs:
   ci:
-    strategy:
-      matrix:
-        python-version: ["3.9"]
-        os: [ubuntu-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-      - name: Set Up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+      - name: Set Up Python
+        id: setup-python
+        uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "3.11"
+      - name: Update Pip
+        run: python -m pip install --upgrade pip
 
-      - name: Install Poetry
-        uses: snok/install-poetry@v1.3.0
+      - name: Set up Poetry
+        uses: abatilo/actions-poetry@v2.0.0
         with:
-          virtualenvs-create: true
-          virtualenvs-in-project: true
+          poetry-version: 1.5.1
 
-      - name: Load Cached Venv
-        id: cached-poetry-dependencies
-        uses: actions/cache@v2
-        with:
-          path: .venv
-          key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
-
-      - name: Install dependencies via Poetry
+      - name: Install dependencies
         run: poetry install
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
 
       - name: Imports Sorted (isort)
-        run: poetry run isort --check src
+        run: poetry run isort --check -v --diff src
 
       - name: PEP8 Compliance (flake8)
         run: poetry run flake8 src
@@ -55,6 +45,4 @@ jobs:
         run: poetry run bandit -r -ll -f screen src
 
       - name: Dependency Security Audit (ossaudit)
-        run: |
-          poetry export -o requirements-dev.txt --dev --without-hashes
-          poetry run python poetry_scripts/run_audit.py
+        run: poetry export -o requirements-dev.txt --with dev --without-hashes; poetry run python poetry_scripts/run_audit.py

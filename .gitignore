@@ -2,6 +2,9 @@
 src/config.json
 src/data/
 
+# OSS audit export
+requirements-dev.txt
+
 # .idea folder
 .idea/
 
