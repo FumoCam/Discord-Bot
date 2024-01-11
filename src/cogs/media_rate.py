@@ -44,8 +44,7 @@ class MediaRate(commands.Cog):
 
         for embed in message.embeds:
             for nullable_property in [embed.video, embed.thumbnail, embed.image]:
-                if nullable_property != discord.Embed.Empty:
-                    # Embed has a media-like property that could be null, but isn't
+                if nullable_property is not None:
                     return True
 
         message_urls = self.url_regex.findall(message.content)
