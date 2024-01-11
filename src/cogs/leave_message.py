@@ -1,5 +1,5 @@
-import nextcord
-from nextcord.ext import commands  # type: ignore
+import discord
+from discord.ext import commands  # type: ignore
 
 from utils import BotClass
 
@@ -27,7 +27,7 @@ class LeaveMessage(commands.Cog):
         )
 
     @commands.Cog.listener()
-    async def on_member_remove(self, member: nextcord.Member):
+    async def on_member_remove(self, member: discord.Member):
         member_name = f"{member.name}#{member.discriminator}"
         if member.name != member.display_name:
             member_name = f"{member.display_name} ({member_name})"

@@ -5,8 +5,8 @@ from json import dumps as json_dumps
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
-import nextcord
-from nextcord.ext import commands  # type: ignore
+import discord
+from discord.ext import commands  # type: ignore
 
 from utils import BotClass, do_log, get_est_time
 
@@ -80,7 +80,7 @@ class MessageLogging(commands.Cog):
 
             time_maps[channel_id] = {"time": newest_time, "obj": channel_object}
 
-        all_channels = self.bot.guild.threads + self.bot.guild.text_channels
+        all_channels = list(self.bot.guild.threads) + self.bot.guild.text_channels
         for channel in all_channels:
             if channel.id not in time_maps:
                 time_maps[channel.id] = {"time": None, "obj": channel}
@@ -142,7 +142,7 @@ class MessageLogging(commands.Cog):
         do_log("Message logging ready")
 
     @commands.Cog.listener()
-    async def on_message(self, message: nextcord.Message):
+    async def on_message(self, message: discord.Message):
         if self.disabled:
             return
 
@@ -166,7 +166,7 @@ class MessageLogging(commands.Cog):
         self.db_connection.commit()
 
     async def message_to_db_columns(
-        self, message: nextcord.Message
+        self, message: discord.Message
     ) -> MessageColumnsType:
         extra_data: Dict[str, Any] = {}
 

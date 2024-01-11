@@ -3,8 +3,8 @@ from asyncio import sleep as async_sleep
 from time import time
 from typing import Any, Dict, List, Union
 
-import nextcord
-from nextcord.ext import commands  # type: ignore
+import discord
+from discord.ext import commands  # type: ignore
 
 from utils import BotClass, do_log, log_error
 
@@ -38,7 +38,7 @@ class InviteCheck(commands.Cog):
         self.invites = (await self.bot.guild.invites())[:]
         self.invite_map = await self.map_invites(self.invites)
 
-    async def map_invites(self, invites: List[nextcord.Invite]):
+    async def map_invites(self, invites: List[discord.Invite]):
         invite_map: Dict[str, Dict] = {}
         for invite in invites:
             if invite.code is None:
@@ -51,7 +51,7 @@ class InviteCheck(commands.Cog):
         return invite_map.copy()
 
     @commands.Cog.listener()
-    async def on_member_join(self, member: nextcord.Member):
+    async def on_member_join(self, member: discord.Member):
         # Intercept a recently finished finite-use invite
         self.latest_join_time = time()
         await async_sleep(2)
@@ -61,7 +61,7 @@ class InviteCheck(commands.Cog):
         invite_message = self.custom_invite_format.format(
             member_name=member.mention, invite_name="{invite_name}"
         )
-        current_invites: List[nextcord.Invite] = await self.bot.guild.invites()
+        current_invites: List[discord.Invite] = await self.bot.guild.invites()
         if self.debug:
             do_log(f"Old Invite Map:\n{self.invite_map}\n")
             new_invite_map = await self.map_invites(current_invites)
@@ -128,11 +128,11 @@ class InviteCheck(commands.Cog):
         await self.welcome_channel.send(invite_message)
 
     @commands.Cog.listener()
-    async def on_invite_create(self, invite: nextcord.Invite):
+    async def on_invite_create(self, invite: discord.Invite):
         await self.update_invites()
 
     @commands.Cog.listener()
-    async def on_invite_delete(self, invite: nextcord.Invite):
+    async def on_invite_delete(self, invite: discord.Invite):
         mapped_invite = self.invite_map.get(invite.code)
         if mapped_invite is not None:
             single_use = mapped_invite["max_uses"] != 0

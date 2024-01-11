@@ -1,7 +1,7 @@
 from asyncio import sleep as async_sleep
 
-import nextcord
-from nextcord.ext import commands  # type: ignore
+import discord
+from discord.ext import commands  # type: ignore
 
 from utils import BotClass
 
@@ -11,7 +11,7 @@ class Fun(commands.Cog):
         self.bot = bot
         self.morb_emoji = self.bot.CFG.get("morb_emoji", "🚩")
 
-    async def morb_detector(self, message: nextcord.Message):
+    async def morb_detector(self, message: discord.Message):
         # split_message = message.content.lower().split(" ")
         morb_indicators = ["morb"]
         for indicator in morb_indicators:
@@ -21,5 +21,5 @@ class Fun(commands.Cog):
                 break
 
     @commands.Cog.listener()
-    async def on_message(self, message: nextcord.Message):
+    async def on_message(self, message: discord.Message):
         await self.morb_detector(message)

@@ -1,7 +1,7 @@
 from asyncio import sleep as async_sleep
 
-import nextcord
-from nextcord.ext import commands, tasks  # type: ignore
+import discord
+from discord.ext import commands, tasks  # type: ignore
 
 from utils import BotClass
 
@@ -21,24 +21,24 @@ class VoiceChannelHoist(commands.Cog):
         # Category for voice chats
         voice_channels_category_id = self.bot.CFG.get("voice_channels_category_id")
         voice_channels_category = self.bot.guild.get_channel(voice_channels_category_id)
-        if not isinstance(voice_channels_category, nextcord.CategoryChannel):
+        if not isinstance(voice_channels_category, discord.CategoryChannel):
             print(
                 f"[Could not find VC category by id '{voice_channels_category_id}', disabling voice channel hoist "
                 "subroutine]"
             )
             return
-        self.voice_channels_category: nextcord.CategoryChannel = voice_channels_category
+        self.voice_channels_category: discord.CategoryChannel = voice_channels_category
 
         # Indicator for voice chat user count
         voice_chat_indicator_id = self.bot.CFG.get("voice_chat_indicator_id")
         voice_chat_indicator = self.bot.guild.get_channel(voice_chat_indicator_id)
-        if not isinstance(voice_chat_indicator, nextcord.VoiceChannel):
+        if not isinstance(voice_chat_indicator, discord.VoiceChannel):
             print(
                 f"[Could not find indicator VC channel by id '{voice_chat_indicator_id}', disabling voice channel "
                 "hoist subroutine]"
             )
             return
-        self.voice_chat_indicator: nextcord.VoiceChannel = voice_chat_indicator
+        self.voice_chat_indicator: discord.VoiceChannel = voice_chat_indicator
 
         # Category for indicators
         voice_chat_indictor_category_id = self.bot.CFG.get(
@@ -47,13 +47,13 @@ class VoiceChannelHoist(commands.Cog):
         voice_chat_indictor_category = self.bot.guild.get_channel(
             voice_chat_indictor_category_id
         )
-        if not isinstance(voice_chat_indictor_category, nextcord.CategoryChannel):
+        if not isinstance(voice_chat_indictor_category, discord.CategoryChannel):
             print(
                 f"[Could not find indicator category by id '{voice_chat_indictor_category_id}', disabling voice "
                 "channel hoist subroutine]"
             )
             return
-        self.voice_chat_indictor_category: nextcord.CategoryChannel = (
+        self.voice_chat_indictor_category: discord.CategoryChannel = (
             voice_chat_indictor_category
         )
 
@@ -116,15 +116,14 @@ class VoiceChannelHoist(commands.Cog):
 
         # Edit indicator to reflect users in VC
         if self.voice_chat_indicator.name != indicator_name:
-
             await self.voice_chat_indicator.edit(name=indicator_name)
 
     @commands.Cog.listener()
     async def on_voice_state_update(
         self,
-        member: nextcord.Member,
-        before: nextcord.VoiceState,
-        after: nextcord.VoiceState,
+        member: discord.Member,
+        before: discord.VoiceState,
+        after: discord.VoiceState,
     ):
         if not self.ready:
             return

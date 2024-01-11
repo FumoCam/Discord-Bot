@@ -3,8 +3,8 @@ from asyncio import sleep as async_sleep
 from io import BytesIO
 from traceback import format_exc
 
-import nextcord
-from nextcord.ext import commands  # type: ignore
+import discord
+from discord.ext import commands  # type: ignore
 
 from utils import BotClass, log_error, try_delete_message
 
@@ -68,7 +68,7 @@ class Suggestions(commands.Cog):
         self.ready = True
 
     @commands.Cog.listener()
-    async def on_message(self, message: nextcord.Message):
+    async def on_message(self, message: discord.Message):
         if not self.ready:
             return
         if message.channel.id != self.suggestions_human_channel.id:
@@ -90,7 +90,7 @@ class Suggestions(commands.Cog):
                 attachment_obj = BytesIO()
                 await attachment.save(attachment_obj)
                 attachments.append(
-                    nextcord.File(attachment_obj, filename=attachment.filename)
+                    discord.File(attachment_obj, filename=attachment.filename)
                 )
             except Exception:
                 log_error(format_exc())

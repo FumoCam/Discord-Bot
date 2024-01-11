@@ -2,9 +2,9 @@ from asyncio import sleep as async_sleep
 from mimetypes import guess_type
 from re import compile as regex_compile
 
-import nextcord
+import discord
 from aiohttp import ClientSession as AioClientSession
-from nextcord.ext import commands  # type: ignore
+from discord.ext import commands  # type: ignore
 
 from utils import BotClass
 
@@ -37,14 +37,14 @@ class MediaRate(commands.Cog):
         self.upvote_emoji = self.bot.CFG.get("media_rate_upvote", "👍")
         self.rate_any_url = self.bot.CFG.get("media_rate_any_url", False)
 
-    async def message_has_media(self, message: nextcord.Message):
+    async def message_has_media(self, message: discord.Message):
         if len(message.attachments) > 0:
             # Message has an attachment, obviously media
             return True
 
         for embed in message.embeds:
             for nullable_property in [embed.video, embed.thumbnail, embed.image]:
-                if nullable_property != nextcord.Embed.Empty:
+                if nullable_property != discord.Embed.Empty:
                     # Embed has a media-like property that could be null, but isn't
                     return True
 
@@ -76,7 +76,7 @@ class MediaRate(commands.Cog):
         return False
 
     @commands.Cog.listener()
-    async def on_message(self, message: nextcord.Message):
+    async def on_message(self, message: discord.Message):
         if message.channel.id not in self.media_rate_channel_ids:
             return
         if await self.message_has_media(message):

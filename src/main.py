@@ -1,7 +1,7 @@
 import os
 from traceback import format_exc
 
-import nextcord
+import discord
 from dotenv import load_dotenv
 
 import utils
@@ -24,7 +24,7 @@ async def on_error(event, args="", kwargs=""):
 
 
 @bot.client.event
-async def on_message(message: nextcord.Message):
+async def on_message(message: discord.Message):
     if not bot.ready:  # Handle race condition
         return
 
@@ -48,13 +48,13 @@ async def on_message(message: nextcord.Message):
 
 
 async def post_init():
-    bot.client.add_cog(InviteCheckCog(bot))
-    bot.client.add_cog(MessageLoggingCog(bot))
-    bot.client.add_cog(MediaRateCog(bot))
-    bot.client.add_cog(LeaveMessageCog(bot))
-    bot.client.add_cog(SuggestionsCog(bot))
-    bot.client.add_cog(VoiceChannelHoistCog(bot))
-    bot.client.add_cog(FunCog(bot))
+    await bot.client.add_cog(InviteCheckCog(bot))
+    await bot.client.add_cog(MessageLoggingCog(bot))
+    await bot.client.add_cog(MediaRateCog(bot))
+    await bot.client.add_cog(LeaveMessageCog(bot))
+    await bot.client.add_cog(SuggestionsCog(bot))
+    await bot.client.add_cog(VoiceChannelHoistCog(bot))
+    await bot.client.add_cog(FunCog(bot))
 
 
 async def config():
@@ -79,7 +79,7 @@ async def on_ready():
         utils.do_log(f"Bot name: {bot.client.user.name}")
         utils.do_log(f"Bot ID: {bot.client.user.id}")
         # await bot.client.change_presence(
-        #     activity=nextcord.Game(name="/help", type=0)
+        #     activity=discord.Game(name="/help", type=0)
         # )
         await config()
 

@@ -5,14 +5,14 @@ from json import load as load_json
 from math import floor
 from typing import Any, Dict, List, TextIO, Tuple, Union
 
-from nextcord import Guild as DiscordGuild
-from nextcord import Intents as DiscordIntents
-from nextcord import Message as DiscordMessage
-from nextcord import Role as DiscordRole
-from nextcord import TextChannel as DiscordChannel
-from nextcord import User as DiscordUser
-from nextcord import Webhook as DiscordWebhook
-from nextcord.ext.commands import Bot as DiscordBot  # type: ignore
+from discord import Guild as DiscordGuild
+from discord import Intents as DiscordIntents
+from discord import Message as DiscordMessage
+from discord import Role as DiscordRole
+from discord import TextChannel as DiscordChannel
+from discord import User as DiscordUser
+from discord import Webhook as DiscordWebhook
+from discord.ext.commands import Bot as DiscordBot  # type: ignore
 from pytz import timezone
 
 
@@ -21,15 +21,15 @@ class BotClass:
         intents = DiscordIntents.default()
         intents.members = True
         intents.guilds = True
-        intents.messages = True
+        intents.message_content = True
         intents.invites = True
         intents.voice_states = True
 
         self.client = DiscordBot(command_prefix="/", intents=intents)
-        self.logger = logging.getLogger("nextcord")
+        self.logger = logging.getLogger("discord")
         self.logger.setLevel(logging.ERROR)
         self.handler = logging.FileHandler(
-            filename="nextcord.log", encoding="utf-8", mode="w"
+            filename="discord.log", encoding="utf-8", mode="w"
         )
         self.handler.setFormatter(
             logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s")
@@ -181,6 +181,7 @@ async def get_english_timestamp(time_var: Union[int, float]) -> str:
 
 
 def load_config_to_bot(bot_instance: BotClass) -> BotClass:
+    print("Loading config 2")
     parser = ArgumentParser(description="Discord bot arguments.")
     parser.add_argument(
         "--config", help="Filepath for the config JSON file", default="config.json"
@@ -191,6 +192,7 @@ def load_config_to_bot(bot_instance: BotClass) -> BotClass:
             loaded_config = json_load_eval(config_file)
     except FileNotFoundError:
         raise FileNotFoundError(f"'{args.config}' not found.")
+    print(loaded_config)
     for config_key in loaded_config:
         loaded_val = loaded_config[config_key]
         bot_instance.CFG[config_key] = loaded_val
